@@ -1,18 +1,38 @@
+import { useState } from 'react'
 import '../styles/toolbar.css'
+import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
 
 const ToolBar = () => {
+  const [selectedButton, setSelectedButton] = useState('')
+
+  const selectedTool = (tool: string) => {
+    if (selectedButton === tool) setSelectedButton('')
+    else setSelectedButton(tool)
+  }
+
   return (
     <div className="toolbar">
-      <button className="toolbar__btn brush" />
-      <button className="toolbar__btn rect" />
-      <button className="toolbar__btn circle" />
-      <button className="toolbar__btn eraser" />
-      <button className="toolbar__btn line" />
-      <button className="toolbar__btn fill" />
+      {toolbarDataLeft.map((item, index) => (
+        <button
+          key={index}
+          className={'toolbar__btn ' + (selectedButton === item.name ? 'toolbar__btn-active' : '')}
+          onClick={() => selectedTool(item.name)}
+        >
+          <img alt={item.name} src={item.src} />
+        </button>
+      ))}
+
       <input style={{ marginLeft: 10 }} type="color" />
-      <button className="toolbar__btn undo" />
-      <button className="toolbar__btn redo" />
-      <button className="toolbar__btn save" />
+
+      {toolbarDataRight.map((item, index) => (
+        <button
+          key={(index + 1) * 5}
+          style={index === 0 ? { marginLeft: 'auto' } : {}}
+          className={'toolbar__btn'}
+        >
+          <img alt={item.name} src={item.src} />
+        </button>
+      ))}
     </div>
   )
 }

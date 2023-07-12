@@ -1,5 +1,5 @@
 .toolbar {
-  height: 40px;
+  height: 60px;
   background-color: white;
   background-repeat: no-repeat;
   background-size: cover;
@@ -8,63 +8,24 @@
   align-items: center;
   position: absolute;
   width: 100%;
+  padding: 0 10px;
   box-shadow: 0 4px 5px gray;
   z-index: 999;
 }
 
 .toolbar__btn {
-  height: 25px;
-  width: 25px;
+  height: 30px;
+  width: 30px;
+  padding: 2.5px;
   border: none;
   outline: none;
   cursor: pointer;
+  background-color: white;
   background-size: cover;
-  margin-left: 10px;
+  margin: 0 5px;
+  transition: all ease .75s;
 }
 
-.toolbar .brush {
-  background-color: white;
-  background-image: url("../assets/img/pencil.svg");
-}
-
-.toolbar .rect {
-  background-color: white;
-  background-image: url("../assets/img/rectangle.svg");
-}
-
-.toolbar .circle {
-  background-color: white;
-  background-image: url("../assets/img/circle.svg");
-}
-
-.toolbar .eraser {
-  background-color: white;
-  background-image: url("../assets/img/eraser.svg");
-}
-
-.toolbar .line {
-  background-color: white;
-  background-image: url("../assets/img/line.svg");
-}
-
-.toolbar .fill {
-  background-color: white;
-  background-image: url("../assets/img/fill.svg");
-}
-
-.toolbar .undo {
-  margin-left: auto;
-  background-color: white;
-  background-image: url("../assets/img/undo-left.svg");
-}
-
-.toolbar .redo {
-  background-color: white;
-  background-image: url("../assets/img/undo-right.svg");
-}
-
-.toolbar .save {
-  background-color: white;
-  background-image: url("../assets/img/save.svg");
-  margin-right: 10px;
+.toolbar__btn-active {
+  background-color: #ccc;
 }
