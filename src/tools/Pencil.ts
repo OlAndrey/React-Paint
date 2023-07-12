@@ -1,0 +1,50 @@
+import Tools from './Tool'
+
+export default class Pencil extends Tools {
+  radius: number = 5
+  isMouseDown: boolean = false
+
+  constructor(context: HTMLCanvasElement) {
+    super(context)
+    this.draw = this.draw.bind(this)
+    this.listenEvent()
+  }
+
+  listenEvent() {
+    this.canv.onmousedown = this.mouseDown.bind(this)
+    this.canv.onmouseup = this.mouseUp.bind(this)
+    this.canv.onmousemove = this.mouseMove.bind(this)
+  }
+
+  mouseDown() {
+    this.isMouseDown = true
+  }
+
+  mouseUp() {
+    if (this.ctx) this.ctx.beginPath()
+    this.isMouseDown = false
+  }
+
+  mouseMove(e: MouseEvent) {
+    const target = e.target as HTMLCanvasElement;
+    const [x, y] = [e.pageX - target.offsetLeft, e.pageY - target.offsetTop]
+    if (this.isMouseDown) {
+      this.draw(x, y)
+    }
+  }
+
+  draw(x: number, y: number) {
+    if (this.ctx) {
+      this.ctx.lineWidth = this.radius * 2
+      this.ctx.lineTo(x, y)
+      this.ctx.stroke()
+
+      this.ctx.beginPath()
+      this.ctx.arc(x, y, this.radius, 0, Math.PI * 2)
+      this.ctx.fill()
+
+      this.ctx.beginPath()
+      this.ctx.moveTo(x, y)
+    }
+  }
+}
