@@ -8,7 +8,12 @@ import undoImg from '../assets/img/undo-left.svg'
 import redoImg from '../assets/img/undo-right.svg'
 import saveImg from '../assets/img/save.svg'
 
-export const toolbarDataLeft = [
+interface IToolbarData {
+  name: string,
+  src: string
+}
+
+export const toolbarDataLeft: IToolbarData[] = [
   {
     name: 'pencil',
     src: pencilImg
@@ -35,7 +40,7 @@ export const toolbarDataLeft = [
   }
 ]
 
-export const toolbarDataRight = [
+export const toolbarDataRight: IToolbarData[] = [
     {
       name: 'undo',
       src: undoImg

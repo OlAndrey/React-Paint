@@ -1,19 +1,22 @@
-import { useState } from 'react'
 import '../styles/toolbar.css'
 import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
 import Pencil from '../tools/Pencil'
 import Rect from '../tools/Rect'
+import { useAppDispatch, useAppSelector } from '../hooks/redux'
+import { setTool } from '../store/reducers/toolSlice'
 
 const ToolBar = () => {
-  const [selectedButton, setSelectedButton] = useState('')
+  const { canvas } = useAppSelector((state) => state.canvas)
+  const { tool } = useAppSelector((state) => state.tool)
+  const dispatch = useAppDispatch()
 
-  const selectedTool = (tool: string) => {
-    const canv = document.querySelector('#canvas') as HTMLCanvasElement
-    const rect = new Rect(canv)
-    if (selectedButton === tool) {
-      setSelectedButton('')
-      rect.destroyEvent()
-    } else setSelectedButton(tool)
+  const selectedTool = (selectedTool: string) => {
+    if (canvas) {
+      new Pencil(canvas)
+      if (tool === selectedTool) {
+        dispatch(setTool(''))
+      } else dispatch(setTool(selectedTool))
+    }
   }
 
   return (
@@ -21,7 +24,7 @@ const ToolBar = () => {
       {toolbarDataLeft.map((item, index) => (
         <button
           key={index}
-          className={'toolbar__btn ' + (selectedButton === item.name ? 'toolbar__btn-active' : '')}
+          className={'toolbar__btn ' + (tool === item.name ? 'toolbar__btn-active' : '')}
           onClick={() => selectedTool(item.name)}
         >
           <img alt={item.name} src={item.src} />
