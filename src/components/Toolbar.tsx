@@ -2,16 +2,17 @@ import { useState } from 'react'
 import '../styles/toolbar.css'
 import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
 import Pencil from '../tools/Pencil'
+import Rect from '../tools/Rect'
 
 const ToolBar = () => {
   const [selectedButton, setSelectedButton] = useState('')
 
   const selectedTool = (tool: string) => {
     const canv = document.querySelector('#canvas') as HTMLCanvasElement
-    const pencil = new Pencil(canv)
+    const rect = new Rect(canv)
     if (selectedButton === tool) {
       setSelectedButton('')
-      pencil.destroyEvent()
+      rect.destroyEvent()
     } else setSelectedButton(tool)
   }
 
