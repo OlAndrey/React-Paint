@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import '../styles/toolbar.css'
 import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
-import Pencil from '../tools/Pencil'
-import Rect from '../tools/Rect'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setTool } from '../store/reducers/toolSlice'
 import Tools from '../tools/Tool'
+import Pencil from '../tools/Pencil'
+import Line from '../tools/Line'
+import Rect from '../tools/Rect'
 
 const ToolBar = () => {
   const { canvas } = useAppSelector((state) => state.canvasState)
@@ -17,6 +18,10 @@ const ToolBar = () => {
       switch (tool) {
         case 'pencil':
           new Pencil(canvas)
+          break
+
+        case 'line':
+          new Line(canvas)
           break
 
         case 'rect':
