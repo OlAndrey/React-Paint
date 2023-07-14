@@ -19,6 +19,10 @@ export const toolbarDataLeft: IToolbarData[] = [
     src: pencilImg
   },
   {
+    name: 'line',
+    src: lineImg
+  },
+  {
     name: 'rect',
     src: rectImg
   },
@@ -29,10 +33,6 @@ export const toolbarDataLeft: IToolbarData[] = [
   {
     name: 'eraser',
     src: eraserImg
-  },
-  {
-    name: 'line',
-    src: lineImg
   },
   {
     name: 'fill',

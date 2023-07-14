@@ -4,8 +4,8 @@ import toolSlice from './reducers/toolSlice'
 
 export const store = configureStore({
   reducer: {
-    canvas: canvasSlice,
-    tool: toolSlice
+    canvasState: canvasSlice,
+    toolState: toolSlice
   },
 })
 

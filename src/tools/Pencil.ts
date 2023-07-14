@@ -1,7 +1,6 @@
 import Tools from './Tool'
 
 export default class Pencil extends Tools {
-  radius: number = 5
   isMouseDown: boolean = false
 
   constructor(context: HTMLCanvasElement) {
@@ -27,7 +26,8 @@ export default class Pencil extends Tools {
 
   mouseMove(e: MouseEvent) {
     const target = e.target as HTMLCanvasElement;
-    const [x, y] = [e.pageX - target.offsetLeft, e.pageY - target.offsetTop]
+    const x = e.pageX - target.offsetLeft
+    const y = e.pageY - target.offsetTop
     if (this.isMouseDown) {
       this.draw(x, y)
     }

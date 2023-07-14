@@ -1,6 +1,7 @@
 export default class Tools {
   canv: HTMLCanvasElement
   ctx: CanvasRenderingContext2D | null
+  radius: number = 5
 
   constructor(canv: HTMLCanvasElement) {
     this.canv = canv
