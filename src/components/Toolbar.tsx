@@ -7,6 +7,7 @@ import Tools from '../tools/Tool'
 import Pencil from '../tools/Pencil'
 import Line from '../tools/Line'
 import Rect from '../tools/Rect'
+import Circle from '../tools/Circle'
 
 const ToolBar = () => {
   const { canvas } = useAppSelector((state) => state.canvasState)
@@ -26,6 +27,10 @@ const ToolBar = () => {
 
         case 'rect':
           new Rect(canvas)
+          break
+
+        case 'circle':
+          new Circle(canvas)
           break
 
         default:
