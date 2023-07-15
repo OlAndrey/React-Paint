@@ -9,6 +9,7 @@ import Line from '../tools/Line'
 import Rect from '../tools/Rect'
 import Circle from '../tools/Circle'
 import Eraser from '../tools/Eraser'
+import Fill from '../tools/Fill'
 
 const ToolBar = () => {
   const { canvas } = useAppSelector((state) => state.canvasState)
@@ -36,6 +37,10 @@ const ToolBar = () => {
 
         case 'eraser':
           new Eraser(canvas)
+          break
+
+        case 'fill':
+          new Fill(canvas)
           break
 
         default:
