@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import '../styles/toolbar.css'
 import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { setTool } from '../store/reducers/toolSlice'
+import { setTool, setToolColor, setToolName } from '../store/reducers/toolSlice'
 import Tools from '../tools/Tool'
 import Pencil from '../tools/Pencil'
 import Line from '../tools/Line'
@@ -13,46 +13,51 @@ import Fill from '../tools/Fill'
 
 const ToolBar = () => {
   const { canvas } = useAppSelector((state) => state.canvasState)
-  const { tool } = useAppSelector((state) => state.toolState)
+  const { tool, toolName, toolColor, toolLineWidth } = useAppSelector((state) => state.toolState)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (canvas) {
-      switch (tool) {
+      let currentTool = null
+      switch (toolName) {
         case 'pencil':
-          new Pencil(canvas)
+          currentTool = new Pencil(canvas, toolColor, toolLineWidth)
           break
 
         case 'line':
-          new Line(canvas)
+          currentTool = new Line(canvas, toolColor, toolLineWidth)
           break
 
         case 'rect':
-          new Rect(canvas)
+          currentTool = new Rect(canvas, toolColor, toolLineWidth)
           break
 
         case 'circle':
-          new Circle(canvas)
+          currentTool = new Circle(canvas, toolColor, toolLineWidth)
           break
 
         case 'eraser':
-          new Eraser(canvas)
+          currentTool = new Eraser(canvas, toolColor, toolLineWidth)
           break
 
         case 'fill':
-          new Fill(canvas)
+          currentTool = new Fill(canvas, toolColor)
           break
 
         default:
-          new Tools(canvas)
+          currentTool = new Tools(canvas, toolColor, toolLineWidth)
           break
       }
+      dispatch(setTool(currentTool))
     }
-  }, [tool, canvas])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toolName, canvas])
 
   const selectedTool = (selectedTool: string) => {
-    if (tool === selectedTool) dispatch(setTool(''))
-    else dispatch(setTool(selectedTool))
+    if (toolName === selectedTool) {
+      dispatch(setToolName(''))
+      if (tool) tool.destroyEvent()
+    } else dispatch(setToolName(selectedTool))
   }
 
   return (
@@ -60,14 +65,21 @@ const ToolBar = () => {
       {toolbarDataLeft.map((item, index) => (
         <button
           key={index}
-          className={'toolbar__btn ' + (tool === item.name ? 'toolbar__btn-active' : '')}
+          className={'toolbar__btn ' + (toolName === item.name ? 'toolbar__btn-active' : '')}
           onClick={() => selectedTool(item.name)}
         >
           <img alt={item.name} src={item.src} />
         </button>
       ))}
 
-      <input style={{ marginLeft: 10 }} type="color" />
+      <input
+        style={{ marginLeft: 10 }}
+        type="color"
+        onChange={(e) => {
+          dispatch(setToolColor(e.target.value))
+          if (tool) tool.setColor(e.target.value)
+        }}
+      />
 
       {toolbarDataRight.map((item, index) => (
         <button

@@ -6,8 +6,8 @@ export default class Line extends Tools {
   saved: string = ''
   isMouseDown: boolean = false
 
-  constructor(context: HTMLCanvasElement) {
-    super(context)
+  constructor(context: HTMLCanvasElement, color: string, lineWidth: number) {
+    super(context, color, lineWidth)
     this.draw = this.draw.bind(this)
     this.listenEvent()
   }
@@ -54,7 +54,8 @@ export default class Line extends Tools {
       if (this.ctx) {
         this.ctx.clearRect(0, 0, this.canv.width, this.canv.height)
         this.ctx.drawImage(img, 0, 0, this.canv.width, this.canv.height)
-        this.ctx.lineWidth = this.radius * 2
+        this.ctx.lineWidth = this.lineWidth
+        this.ctx.strokeStyle = this.color
 
         this.ctx.beginPath()
         this.ctx.moveTo(this.startX, this.startY)

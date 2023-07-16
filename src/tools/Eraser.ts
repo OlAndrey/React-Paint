@@ -3,8 +3,8 @@ import Tools from './Tool'
 export default class Eraser extends Tools {
   isMouseDown: boolean = false
 
-  constructor(context: HTMLCanvasElement) {
-    super(context)
+  constructor(context: HTMLCanvasElement, color: string, lineWidth: number) {
+    super(context, color, lineWidth)
     this.draw = this.draw.bind(this)
     this.listenEvent()
   }
@@ -27,8 +27,8 @@ export default class Eraser extends Tools {
     this.isMouseDown = false
     if (this.ctx) {
       this.ctx.beginPath()
-      this.ctx.fillStyle = 'black'
-      this.ctx.strokeStyle = 'black'
+      this.ctx.fillStyle = this.color
+      this.ctx.strokeStyle = this.color
     }
   }
 
@@ -43,12 +43,12 @@ export default class Eraser extends Tools {
 
   draw(x: number, y: number) {
     if (this.ctx) {
-      this.ctx.lineWidth = this.radius * 2
+      this.ctx.lineWidth = this.lineWidth
       this.ctx.lineTo(x, y)
       this.ctx.stroke()
 
       this.ctx.beginPath()
-      this.ctx.arc(x, y, this.radius, 0, Math.PI * 2)
+      this.ctx.arc(x, y, this.lineWidth / 2, 0, Math.PI * 2)
       this.ctx.fill()
 
       this.ctx.beginPath()

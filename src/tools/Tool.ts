@@ -1,12 +1,19 @@
 export default class Tools {
   canv: HTMLCanvasElement
   ctx: CanvasRenderingContext2D | null
-  radius: number = 5
+  lineWidth: number
+  color: string
 
-  constructor(canv: HTMLCanvasElement) {
+  constructor(canv: HTMLCanvasElement, color: string, lineWidth: number = 5) {
     this.canv = canv
     this.ctx = canv.getContext('2d')
+    this.color = color
+    this.lineWidth = lineWidth
     this.destroyEvent()
+  }
+
+  setColor(hex: string): void {
+    this.color = hex
   }
 
   destroyEvent(): void {

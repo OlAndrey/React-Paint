@@ -1,8 +1,8 @@
 import Tools from './Tool'
 
 export default class Fill extends Tools {
-  constructor(context: HTMLCanvasElement) {
-    super(context)
+  constructor(context: HTMLCanvasElement, color: string) {
+    super(context, color)
     this.listenEvent()
   }
 
@@ -14,10 +14,21 @@ export default class Fill extends Tools {
     const target = e.target as HTMLCanvasElement
     const x = e.pageX - target.offsetLeft
     const y = e.pageY - target.offsetTop
+    const fillColor = this.hexToRGBA(this.color)
     if (this.ctx) {
-      this.floodFill(this.ctx, x, y, [255, 0, 0, 255])
+      console.log(fillColor)
+      this.floodFill(this.ctx, x, y, fillColor)
     }
   }
+
+  hexToRGBA(hex: string, alpha = 255){
+    const hexArr = hex.match(/\w\w/g)
+    if (hexArr) {
+      const rgb = hexArr.map(x => parseInt(x, 16)) as number[]
+      return rgb.concat([alpha])
+    }
+    return [0, 0, 0, 0]
+  };
 
   getPixel(imageData: ImageData, x: number, y: number) {
     if (x < 0 || y < 0 || x >= imageData.width || y >= imageData.height) {
@@ -33,7 +44,7 @@ export default class Fill extends Tools {
     imageData.data[offset + 0] = color[0]
     imageData.data[offset + 1] = color[1]
     imageData.data[offset + 2] = color[2]
-    imageData.data[offset + 3] = color[0]
+    imageData.data[offset + 3] = color[3]
   }
 
   colorsMatch(
