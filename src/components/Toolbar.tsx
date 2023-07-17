@@ -1,57 +1,22 @@
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import '../styles/toolbar.css'
 import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { setTool, setToolColor, setToolLineWidth, setToolName } from '../store/reducers/toolSlice'
-import Tools from '../tools/Tool'
-import Pencil from '../tools/Pencil'
-import Line from '../tools/Line'
-import Rect from '../tools/Rect'
-import Circle from '../tools/Circle'
-import Eraser from '../tools/Eraser'
-import Fill from '../tools/Fill'
+import { setToolColor, setToolLineWidth, setToolName } from '../store/reducers/toolSlice'
+import { useTool } from '../hooks/toolbar'
 
-const ToolBar = () => {
-  const { canvas } = useAppSelector((state) => state.canvasState)
-  const { tool, toolName, toolColor, toolLineWidth } = useAppSelector((state) => state.toolState)
+type ToolBarPropsType = {
+  canvas: HTMLCanvasElement | null
+}
+
+const ToolBar: FC<ToolBarPropsType> = ({ canvas }) => {
+  const { toolName, toolColor, toolLineWidth } = useAppSelector((state) => state.toolState)
+  const tool = useTool(canvas, toolName)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (canvas) {
-      let currentTool = null
-      switch (toolName) {
-        case 'pencil':
-          currentTool = new Pencil(canvas)
-          break
-
-        case 'line':
-          currentTool = new Line(canvas)
-          break
-
-        case 'rect':
-          currentTool = new Rect(canvas)
-          break
-
-        case 'circle':
-          currentTool = new Circle(canvas)
-          break
-
-        case 'eraser':
-          currentTool = new Eraser(canvas)
-          break
-
-        case 'fill':
-          currentTool = new Fill(canvas)
-          break
-
-        default:
-          currentTool = new Tools(canvas)
-          break
-      }
-      dispatch(setTool(currentTool))
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toolName, canvas])
+    console.log('tool', tool)
+  }, [tool])
 
   const selectedTool = (selectedTool: string) => {
     if (toolName === selectedTool) {

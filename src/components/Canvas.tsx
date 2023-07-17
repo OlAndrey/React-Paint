@@ -1,15 +1,16 @@
-import { useEffect, useRef } from 'react'
+import { FC, MutableRefObject, useEffect, useRef } from 'react'
 import '../styles/canvas.css'
-import { useAppDispatch } from '../hooks/redux'
-import { setCanvas } from '../store/reducers/canvasSlice'
 
-const Canvas = () => {
-  const canvRef = useRef() as React.MutableRefObject<HTMLCanvasElement>
-  const dispatch = useAppDispatch()
+type CanvasPropsType = {
+  setCanvas: (canvas: HTMLCanvasElement) => void
+}
+
+const Canvas: FC<CanvasPropsType> = ({ setCanvas }) => {
+  const canvRef = useRef() as MutableRefObject<HTMLCanvasElement>
 
   useEffect(() => {
-    if (canvRef.current) dispatch(setCanvas(canvRef.current))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (canvRef.current) setCanvas(canvRef.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvRef.current])
 
   return (

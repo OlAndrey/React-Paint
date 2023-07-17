@@ -1,27 +1,27 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { ITool } from '../../types/tools'
+// import { ITool } from '../../types/tools'
 
 interface ToolState {
-  tool: ITool | null
+  // tool: ITool | null
   toolName: string
   toolColor: string
   toolLineWidth: number
 }
 
 const initialState: ToolState = {
-  tool: null,
+  // tool: null,
   toolName: '',
   toolColor: '#000000',
-  toolLineWidth: 5
+  toolLineWidth: 1
 }
 
 export const toolSlice = createSlice({
   name: 'tool',
   initialState,
   reducers: {
-    setTool: (state, action: PayloadAction<any>) => {
-      state.tool = action.payload
-    },
+    // setTool: (state, action: PayloadAction<any>) => {
+    //   state.tool = action.payload
+    // },
     setToolName: (state, action: PayloadAction<string>) => {
       state.toolName = action.payload
     },
@@ -34,6 +34,6 @@ export const toolSlice = createSlice({
   }
 })
 
-export const { setTool, setToolName, setToolColor, setToolLineWidth } = toolSlice.actions
+export const { setToolName, setToolColor, setToolLineWidth } = toolSlice.actions
 
 export default toolSlice.reducer
