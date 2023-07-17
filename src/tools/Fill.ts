@@ -1,8 +1,8 @@
 import Tools from './Tool'
 
 export default class Fill extends Tools {
-  constructor(context: HTMLCanvasElement, color: string) {
-    super(context, color)
+  constructor(context: HTMLCanvasElement,) {
+    super(context)
     this.listenEvent()
   }
 
@@ -14,7 +14,7 @@ export default class Fill extends Tools {
     const target = e.target as HTMLCanvasElement
     const x = e.pageX - target.offsetLeft
     const y = e.pageY - target.offsetTop
-    const fillColor = this.hexToRGBA(this.color)
+    const fillColor = this.hexToRGBA(this.color as string)
     if (this.ctx) {
       console.log(fillColor)
       this.floodFill(this.ctx, x, y, fillColor)

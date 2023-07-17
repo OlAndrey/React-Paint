@@ -3,8 +3,8 @@ import Tools from './Tool'
 export default class Eraser extends Tools {
   isMouseDown: boolean = false
 
-  constructor(context: HTMLCanvasElement, color: string, lineWidth: number) {
-    super(context, color, lineWidth)
+  constructor(context: HTMLCanvasElement) {
+    super(context)
     this.draw = this.draw.bind(this)
     this.listenEvent()
   }

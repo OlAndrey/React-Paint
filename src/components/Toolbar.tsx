@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import '../styles/toolbar.css'
 import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { setTool, setToolColor, setToolName } from '../store/reducers/toolSlice'
+import { setTool, setToolColor, setToolLineWidth, setToolName } from '../store/reducers/toolSlice'
 import Tools from '../tools/Tool'
 import Pencil from '../tools/Pencil'
 import Line from '../tools/Line'
@@ -21,31 +21,31 @@ const ToolBar = () => {
       let currentTool = null
       switch (toolName) {
         case 'pencil':
-          currentTool = new Pencil(canvas, toolColor, toolLineWidth)
+          currentTool = new Pencil(canvas)
           break
 
         case 'line':
-          currentTool = new Line(canvas, toolColor, toolLineWidth)
+          currentTool = new Line(canvas)
           break
 
         case 'rect':
-          currentTool = new Rect(canvas, toolColor, toolLineWidth)
+          currentTool = new Rect(canvas)
           break
 
         case 'circle':
-          currentTool = new Circle(canvas, toolColor, toolLineWidth)
+          currentTool = new Circle(canvas)
           break
 
         case 'eraser':
-          currentTool = new Eraser(canvas, toolColor, toolLineWidth)
+          currentTool = new Eraser(canvas)
           break
 
         case 'fill':
-          currentTool = new Fill(canvas, toolColor)
+          currentTool = new Fill(canvas)
           break
 
         default:
-          currentTool = new Tools(canvas, toolColor, toolLineWidth)
+          currentTool = new Tools(canvas)
           break
       }
       dispatch(setTool(currentTool))
@@ -73,8 +73,22 @@ const ToolBar = () => {
       ))}
 
       <input
+        style={{ width: 100, marginLeft: 10 }}
+        type="range"
+        min={1}
+        max={15}
+        step={1}
+        value={toolLineWidth}
+        onChange={(e) => {
+          dispatch(setToolLineWidth(+e.target.value))
+          if (tool) tool.setLineWidth(+e.target.value)
+        }}
+      />
+
+      <input
         style={{ marginLeft: 10 }}
         type="color"
+        value={toolColor}
         onChange={(e) => {
           dispatch(setToolColor(e.target.value))
           if (tool) tool.setColor(e.target.value)
