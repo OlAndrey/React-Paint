@@ -2,11 +2,9 @@ import '../styles/toolbar.css'
 import { toolbarData } from '../utils/toolBar'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setToolColor, setToolLineWidth, setToolName } from '../store/reducers/toolSlice'
-import undoImg from '../assets/img/undo-left.svg'
-import redoImg from '../assets/img/undo-right.svg'
-import saveImg from '../assets/img/save.svg'
 import { undo, redo } from '../store/reducers/ActionCreator'
 import { useTool } from '../hooks/toolbar'
+import Icon from './Icon'
 
 type ToolBarPropsType = {
   canvas: HTMLCanvasElement | null
@@ -33,7 +31,7 @@ const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
           className={'toolbar__btn ' + (toolName === item.name ? 'toolbar__btn-active' : '')}
           onClick={() => selectedTool(item.name)}
         >
-          <img alt={item.name} src={item.src} />
+          <Icon name={item.src} />
         </button>
       ))}
 
@@ -68,7 +66,7 @@ const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
           if (canvas) dispatch(undo(canvas, undoList[undoList.length - 1]))
         }}
       >
-        <img alt="undo" src={undoImg} />
+        <Icon name="UndoIcon" fill='none' />
       </button>
 
       <button
@@ -78,10 +76,10 @@ const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
           if (canvas) dispatch(redo(canvas, redoList[redoList.length - 1]))
         }}
       >
-        <img alt="redo" src={redoImg} />
+        <Icon name="RedoIcon" fill='none' />
       </button>
       <button className="toolbar__btn">
-        <img alt="save" src={saveImg} />
+        <Icon name="SaveIcon" />
       </button>
     </div>
   )

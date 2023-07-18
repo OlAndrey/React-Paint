@@ -1,10 +1,3 @@
-import pencilImg from '../assets/img/pencil.svg'
-import rectImg from '../assets/img/rectangle.svg'
-import circleImg from '../assets/img/circle.svg'
-import eraserImg from '../assets/img/eraser.svg'
-import lineImg from '../assets/img/line.svg'
-import fillImg from '../assets/img/fill.svg'
-
 interface IToolbarData {
   name: string,
   src: string
@@ -13,27 +6,27 @@ interface IToolbarData {
 export const toolbarData: IToolbarData[] = [
   {
     name: 'pencil',
-    src: pencilImg
+    src: 'PencilIcon'
   },
   {
     name: 'line',
-    src: lineImg
+    src: 'LineIcon'
   },
   {
     name: 'rect',
-    src: rectImg
+    src: 'RectIcon'
   },
   {
     name: 'circle',
-    src: circleImg
+    src: 'CircleIcon'
   },
   {
     name: 'eraser',
-    src: eraserImg
+    src: 'EraserIcon'
   },
   {
     name: 'fill',
-    src: fillImg
+    src: 'FillIcon'
   }
 ]
   
