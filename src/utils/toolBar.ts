@@ -4,16 +4,13 @@ import circleImg from '../assets/img/circle.svg'
 import eraserImg from '../assets/img/eraser.svg'
 import lineImg from '../assets/img/line.svg'
 import fillImg from '../assets/img/fill.svg'
-import undoImg from '../assets/img/undo-left.svg'
-import redoImg from '../assets/img/undo-right.svg'
-import saveImg from '../assets/img/save.svg'
 
 interface IToolbarData {
   name: string,
   src: string
 }
 
-export const toolbarDataLeft: IToolbarData[] = [
+export const toolbarData: IToolbarData[] = [
   {
     name: 'pencil',
     src: pencilImg
@@ -39,19 +36,4 @@ export const toolbarDataLeft: IToolbarData[] = [
     src: fillImg
   }
 ]
-
-export const toolbarDataRight: IToolbarData[] = [
-    {
-      name: 'undo',
-      src: undoImg
-    },
-    {
-      name: 'redo',
-      src: redoImg
-    },
-    {
-      name: 'save',
-      src: saveImg
-    }
-  ]
   

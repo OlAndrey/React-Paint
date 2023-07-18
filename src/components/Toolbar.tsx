@@ -1,22 +1,22 @@
-import { FC, useEffect } from 'react'
 import '../styles/toolbar.css'
-import { toolbarDataLeft, toolbarDataRight } from '../utils/toolBar'
+import { toolbarData } from '../utils/toolBar'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setToolColor, setToolLineWidth, setToolName } from '../store/reducers/toolSlice'
+import undoImg from '../assets/img/undo-left.svg'
+import redoImg from '../assets/img/undo-right.svg'
+import saveImg from '../assets/img/save.svg'
+import { undo, redo } from '../store/reducers/ActionCreator'
 import { useTool } from '../hooks/toolbar'
 
 type ToolBarPropsType = {
   canvas: HTMLCanvasElement | null
 }
 
-const ToolBar: FC<ToolBarPropsType> = ({ canvas }) => {
+const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
+  const { redoList, undoList } = useAppSelector((state) => state.canvasState)
   const { toolName, toolColor, toolLineWidth } = useAppSelector((state) => state.toolState)
   const tool = useTool(canvas, toolName)
   const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    console.log('tool', tool)
-  }, [tool])
 
   const selectedTool = (selectedTool: string) => {
     if (toolName === selectedTool) {
@@ -27,7 +27,7 @@ const ToolBar: FC<ToolBarPropsType> = ({ canvas }) => {
 
   return (
     <div className="toolbar">
-      {toolbarDataLeft.map((item, index) => (
+      {toolbarData.map((item, index) => (
         <button
           key={index}
           className={'toolbar__btn ' + (toolName === item.name ? 'toolbar__btn-active' : '')}
@@ -60,15 +60,29 @@ const ToolBar: FC<ToolBarPropsType> = ({ canvas }) => {
         }}
       />
 
-      {toolbarDataRight.map((item, index) => (
-        <button
-          key={(index + 1) * 5}
-          style={index === 0 ? { marginLeft: 'auto' } : {}}
-          className={'toolbar__btn'}
-        >
-          <img alt={item.name} src={item.src} />
-        </button>
-      ))}
+      <button
+        style={{ marginLeft: 'auto' }}
+        className="toolbar__btn"
+        disabled={!undoList.length}
+        onClick={() => {
+          if (canvas) dispatch(undo(canvas, undoList[undoList.length - 1]))
+        }}
+      >
+        <img alt="undo" src={undoImg} />
+      </button>
+
+      <button
+        className="toolbar__btn"
+        disabled={!redoList.length}
+        onClick={() => {
+          if (canvas) dispatch(redo(canvas, redoList[redoList.length - 1]))
+        }}
+      >
+        <img alt="redo" src={redoImg} />
+      </button>
+      <button className="toolbar__btn">
+        <img alt="save" src={saveImg} />
+      </button>
     </div>
   )
 }

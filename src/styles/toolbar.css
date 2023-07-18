@@ -1,5 +1,5 @@
 .toolbar {
-  height: 60px;
+  height: 70px;
   background-color: white;
   background-repeat: no-repeat;
   background-size: cover;
@@ -14,8 +14,8 @@
 }
 
 .toolbar__btn {
-  height: 30px;
-  width: 30px;
+  height: 35px;
+  width: 35px;
   padding: 2.5px;
   border: none;
   outline: none;
@@ -24,6 +24,15 @@
   background-size: cover;
   margin: 0 5px;
   transition: all ease .75s;
+}
+
+.toolbar__btn:disabled {
+  cursor: default;
+}
+
+.toolbar__btn:disabled img{
+  background-color: #fff;
+  cursor: default;
 }
 
 .toolbar__btn-active {
