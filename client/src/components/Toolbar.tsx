@@ -11,7 +11,7 @@ type ToolBarPropsType = {
 }
 
 const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
-  const { redoList, undoList } = useAppSelector((state) => state.canvasState)
+  const { canvasUsers, redoList, undoList } = useAppSelector((state) => state.canvasState)
   const { toolName, toolColor, toolLineWidth } = useAppSelector((state) => state.toolState)
   const tool = useTool(canvas, toolName)
   const dispatch = useAppDispatch()
@@ -58,15 +58,19 @@ const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
         }}
       />
 
+      <div className="toolbar__user-num">
+        <Icon name="EyeIcon" fill="none" />
+        {canvasUsers}
+      </div>
+
       <button
-        style={{ marginLeft: 'auto' }}
         className="toolbar__btn"
         disabled={!undoList.length}
         onClick={() => {
           if (canvas) dispatch(undo(canvas, undoList[undoList.length - 1]))
         }}
       >
-        <Icon name="UndoIcon" fill='none' />
+        <Icon name="UndoIcon" fill="none" />
       </button>
 
       <button
@@ -76,7 +80,7 @@ const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
           if (canvas) dispatch(redo(canvas, redoList[redoList.length - 1]))
         }}
       >
-        <Icon name="RedoIcon" fill='none' />
+        <Icon name="RedoIcon" fill="none" />
       </button>
       <button className="toolbar__btn">
         <Icon name="SaveIcon" />

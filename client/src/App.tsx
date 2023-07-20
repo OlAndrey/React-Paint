@@ -1,7 +1,8 @@
+import { useState } from "react"
 import "./styles/app.css"
 import Canvas from './components/Canvas'
 import ToolBar from './components/Toolbar'
-import { useState } from "react"
+import Auth from "./components/Auth"
 
 function App() {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
@@ -9,6 +10,7 @@ function App() {
   return (
     <div className="app">
       <ToolBar canvas={canvas} />
+      <Auth />
       <Canvas setCanvas={setCanvas} />
     </div>
   )

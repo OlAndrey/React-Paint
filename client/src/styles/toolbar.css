@@ -38,3 +38,12 @@
 .toolbar__btn-active {
   background-color: #ccc;
 }
+
+.toolbar__user-num{
+  width: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 20px 0 auto;
+  font-size: 18px;
+}
