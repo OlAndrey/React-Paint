@@ -4,12 +4,12 @@ const WSServer = require('express-ws')(app)
 const aWss = WSServer.getWss()
 const broadcastConnection = require('./src/utils/broadcastConnection')
 const generalInformation = require('./src/utils/generalInfo')
+const notifyLeav = require('./src/utils/notifyLeav')
 
 const maxClients = 5
 let rooms = {}
 
 app.ws('/', (ws, res) => {
-  ws.send('Connected!', ws.name)
   ws.on('message', function message(data) {
     const obj = JSON.parse(data)
     const type = obj.type
@@ -38,24 +38,27 @@ function connect(ws, params) {
 
   if (rooms[room].length >= maxClients) {
     console.warn(`Room ${room} is full!`)
-    return ws.send(`Room ${room} is full!`)
+    const obj = {
+      type: 'error-connect',
+      params: { error: `Room ${room} is full!` }
+    }
+    return ws.send(JSON.stringify(obj))
   }
 
   ws['room'] = room
   ws.id = params.id
   ws.name = params.name
   generalInformation(ws, rooms)
-  broadcastConnection(aWss, ws)
+  broadcastConnection(aWss, ws, rooms)
 }
 
 function leave(ws, params) {
   const room = ws.room
-  console.log(room, rooms)
+  notifyLeav(aWss, ws, rooms)
   rooms[room] = rooms[room].filter((so) => so !== ws)
   ws['room'] = undefined
 
   if (rooms[room].length == 0) close(room)
-  ws.send(`You leave in room ${room}`)
 }
 
 function close(room) {
@@ -63,7 +66,6 @@ function close(room) {
   for (const roomName in rooms) {
     if (roomName !== room) {
       newRooms[roomName] = rooms[roomName]
-      console.log(roomName)
     }
   }
 
