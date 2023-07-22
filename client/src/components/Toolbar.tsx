@@ -8,12 +8,13 @@ import Icon from './Icon'
 
 type ToolBarPropsType = {
   canvas: HTMLCanvasElement | null
+  socket: WebSocket | null
 }
 
-const ToolBar: React.FC<ToolBarPropsType> = ({ canvas }) => {
-  const { canvasUsers, redoList, undoList } = useAppSelector((state) => state.canvasState)
+const ToolBar: React.FC<ToolBarPropsType> = ({ canvas, socket }) => {
+  const { room, canvasUsers, redoList, undoList } = useAppSelector((state) => state.canvasState)
   const { toolName, toolColor, toolLineWidth } = useAppSelector((state) => state.toolState)
-  const tool = useTool(canvas, toolName)
+  const tool = useTool(canvas, toolName, socket, room)
   const dispatch = useAppDispatch()
 
   const selectedTool = (selectedTool: string) => {

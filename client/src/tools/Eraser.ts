@@ -2,9 +2,11 @@ import Tools from './Tool'
 
 export default class Eraser extends Tools {
   isMouseDown: boolean = false
+  socket: WebSocket
 
-  constructor(context: HTMLCanvasElement) {
-    super(context)
+  constructor(context: HTMLCanvasElement, socket: WebSocket, room: string) {
+    super(context, room)
+    this.socket = socket
     this.draw = this.draw.bind(this)
     this.listenEvent()
   }

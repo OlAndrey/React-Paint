@@ -1,16 +1,29 @@
-import { MutableRefObject, useRef, useState } from 'react'
+import { FC, MutableRefObject, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Slide, ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/modal.css'
 import { useAppDispatch } from '../hooks/redux'
-import { setCanvasUsers, setUserName } from '../store/reducers/canvasSlice'
+import { setCanvasUsers, setRoom, setUserName } from '../store/reducers/canvasSlice'
+import { messageHandler } from '../utils/messageHandler'
 
-const Auth = () => {
+type AuthPropsType = {
+  canvas: HTMLCanvasElement | null
+  setSocket: (socket: WebSocket) => void
+}
+
+const Auth: FC<AuthPropsType> = ({ canvas, setSocket }) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>
   const [showModal, setShowModal] = useState(true)
   const dispatch = useAppDispatch()
   let { id } = useParams()
+
+  const infoConnect = (clients: number) => {
+    dispatch(setCanvasUsers(clients))
+    dispatch(setUserName(inputRef.current.value))
+    dispatch(setRoom(id as string))
+    setShowModal(false)
+  }
 
   const infoRoom = (params: any, isNewUser: boolean) => {
     const toastOpnions = {
@@ -39,32 +52,12 @@ const Auth = () => {
           params: { room: id, id: Date.now(), name: inputRef.current.value }
         }
         ws.send(JSON.stringify(obj))
+        setSocket(ws)
       }
 
       ws.onmessage = function (event) {
         const obj = JSON.parse(event.data)
-        const type = obj.type
-        const params = obj.params
-        console.log(obj)
-        switch (type) {
-          case 'info-room':
-            dispatch(setCanvasUsers(params.clients))
-            dispatch(setUserName(inputRef.current.value))
-            setShowModal(false)
-            break
-
-          case 'info-connect':
-            infoRoom(params, true)
-            break
-
-          case 'info-leave':
-            infoRoom(params, false)
-            break
-
-          default:
-            console.warn(`Type: ${type} unknown`)
-            break
-        }
+        messageHandler(obj, canvas, infoConnect, infoRoom)
       }
 
       window.addEventListener('beforeunload', () => {

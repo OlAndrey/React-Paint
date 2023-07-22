@@ -1,8 +1,8 @@
 import Tools from './Tool'
 
 export default class Fill extends Tools {
-  constructor(context: HTMLCanvasElement,) {
-    super(context)
+  constructor(context: HTMLCanvasElement, socket: WebSocket, room: string) {
+    super(context, room)
     this.listenEvent()
   }
 

@@ -6,11 +6,12 @@ import Auth from "./components/Auth"
 
 function App() {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
+  const [socket, setSocket] = useState<WebSocket | null>(null)
 
   return (
     <div className="app">
-      <ToolBar canvas={canvas} />
-      <Auth />
+      <ToolBar canvas={canvas} socket={socket} />
+      <Auth canvas={canvas} setSocket={setSocket} />
       <Canvas setCanvas={setCanvas} />
     </div>
   )

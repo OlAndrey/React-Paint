@@ -1,3 +1,4 @@
+import { IStaticDrawLine } from '../types/tools'
 import Tools from './Tool'
 
 export default class Line extends Tools {
@@ -5,9 +6,11 @@ export default class Line extends Tools {
   startY: number = 0
   saved: string = ''
   isMouseDown: boolean = false
+  socket: WebSocket
 
-  constructor(context: HTMLCanvasElement) {
-    super(context)
+  constructor(context: HTMLCanvasElement, socket: WebSocket, room: string) {
+    super(context, room)
+    this.socket = socket
     this.draw = this.draw.bind(this)
     this.listenEvent()
   }
@@ -31,10 +34,31 @@ export default class Line extends Tools {
     this.saved = this.canv.toDataURL()
   }
 
-  mouseUp() {
+  mouseUp(e: MouseEvent) {
+    const target = e.target as HTMLCanvasElement
+    const x = e.pageX - target.offsetLeft
+    const y = e.pageY - target.offsetTop
     this.isMouseDown = false
     if (this.ctx) {
       this.ctx.beginPath()
+    }
+    if (this.socket) {
+      const obj = {
+        type: 'draw',
+        params: {
+          room: this.room,
+          func: 'line',
+          args: {
+            startX: this.startX,
+            startY: this.startY,
+            x,
+            y,
+            lineWidth: this.lineWidth,
+            color: this.color
+          }
+        }
+      }
+      this.socket.send(JSON.stringify(obj))
     }
   }
 
@@ -62,6 +86,26 @@ export default class Line extends Tools {
         this.ctx.lineTo(x, y)
         this.ctx.stroke()
       }
+    }
+  }
+
+  static staticDraw(ctx: CanvasRenderingContext2D | null, args: IStaticDrawLine) {
+    const { startX, startY, x, y, lineWidth, color } = args
+    if (ctx) {
+      const thisColor = ctx.strokeStyle
+      const thisLineWidth = ctx.lineWidth
+
+      ctx.lineWidth = lineWidth
+      ctx.strokeStyle = color
+
+      ctx.beginPath()
+      ctx.moveTo(startX, startY)
+      ctx.lineTo(x, y)
+      ctx.stroke()
+      ctx.beginPath()
+
+      ctx.strokeStyle = thisColor
+      ctx.lineWidth = thisLineWidth
     }
   }
 }

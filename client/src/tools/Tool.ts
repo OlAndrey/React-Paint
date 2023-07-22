@@ -3,9 +3,11 @@ export default class Tools {
   ctx: CanvasRenderingContext2D | null
   color: string | CanvasGradient | CanvasPattern
   lineWidth: number
+  room: string
 
-  constructor(canv: HTMLCanvasElement) {
+  constructor(canv: HTMLCanvasElement, room: string) {
     this.canv = canv
+    this.room = room
     this.ctx = canv.getContext('2d')
     this.color = this.ctx?.strokeStyle || '#000000'
     this.lineWidth = this.ctx?.lineWidth || 1

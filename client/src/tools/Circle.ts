@@ -5,9 +5,11 @@ export default class Circle extends Tools {
   startY: number = 0
   saved: string = ''
   isMouseDown: boolean = false
+  socket: WebSocket
 
-  constructor(context: HTMLCanvasElement) {
-    super(context)
+  constructor(context: HTMLCanvasElement, socket: WebSocket, room: string) {
+    super(context, room)
+    this.socket = socket
     this.draw = this.draw.bind(this)
     this.listenEvent()
   }

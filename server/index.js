@@ -24,6 +24,10 @@ app.ws('/', (ws, res) => {
         leave(ws, params)
         break
 
+      case 'draw':
+        drawHandler(ws, params)
+        break
+
       default:
         console.warn(`Type: ${type} unknown`)
         break
@@ -40,7 +44,7 @@ function connect(ws, params) {
     console.warn(`Room ${room} is full!`)
     const obj = {
       type: 'error-connect',
-      params: { error: `Room ${room} is full!` }
+      params: { message: `Room ${room} is full!` }
     }
     return ws.send(JSON.stringify(obj))
   }
@@ -55,7 +59,7 @@ function connect(ws, params) {
 function leave(ws, params) {
   const room = ws.room
   notifyLeav(aWss, ws, rooms)
-  rooms[room] = rooms[room].filter((so) => so !== ws)
+  if (Array.isArray(rooms[room])) rooms[room] = rooms[room].filter((so) => so !== ws)
   ws['room'] = undefined
 
   if (rooms[room].length == 0) close(room)
@@ -70,6 +74,19 @@ function close(room) {
   }
 
   rooms = newRooms
+}
+
+function drawHandler(ws, params) {
+  console.log( 'draw-' + params.func)
+  aWss.clients.forEach((client) => {
+    if (client.room === ws.room && client.id !== ws.id) {
+      const obj = {
+        type: 'draw-' + params.func,
+        params: { args: params.args }
+      }
+      client.send(JSON.stringify(obj))
+    }
+  })
 }
 
 app.listen(5000, () => {
