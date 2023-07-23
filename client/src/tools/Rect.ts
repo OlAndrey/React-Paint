@@ -1,3 +1,4 @@
+import { IStaticDrawRect } from '../types/tools'
 import Tools from './Tool'
 
 export default class Rect extends Tools {
@@ -29,9 +30,31 @@ export default class Rect extends Tools {
     this.isMouseDown = true
   }
 
-  mouseUp() {
-    if (this.ctx) this.ctx.beginPath()
+  mouseUp(e: MouseEvent) {
+    const target = e.target as HTMLCanvasElement
+    const width = e.pageX - target.offsetLeft - this.startX
+    const height = e.pageY - target.offsetTop - this.startY
+
     this.isMouseDown = false
+    if (this.ctx) this.ctx.beginPath()
+    if (this.socket) {
+      const obj = {
+        type: 'draw',
+        params: {
+          room: this.room,
+          func: 'rect',
+          args: {
+            startX: this.startX,
+            startY: this.startY,
+            width,
+            height,
+            lineWidth: this.lineWidth,
+            color: this.color
+          }
+        }
+      }
+      this.socket.send(JSON.stringify(obj))
+    }
   }
 
   mouseMove(e: MouseEvent) {
@@ -62,6 +85,27 @@ export default class Rect extends Tools {
         this.ctx.stroke()
         this.ctx.fill()
       }
+    }
+  }
+
+  static staticDraw(ctx: CanvasRenderingContext2D | null, args: IStaticDrawRect) {
+    const { startX, startY, width, height, lineWidth, color } = args
+    if (ctx) {
+      const thisColor = ctx.strokeStyle
+      const thisLineWidth = ctx.lineWidth
+
+      ctx.lineWidth = lineWidth
+      ctx.fillStyle = 'white'
+      ctx.strokeStyle = color
+
+      ctx.beginPath()
+      ctx.rect(startX, startY, width, height)
+      ctx.stroke()
+      ctx.fill()
+      ctx.beginPath()
+
+      ctx.strokeStyle = thisColor
+      ctx.lineWidth = thisLineWidth
     }
   }
 }

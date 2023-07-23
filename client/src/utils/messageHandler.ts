@@ -1,6 +1,12 @@
 import Line from '../tools/Line'
 import Pencil from '../tools/Pencil'
-import { IStaticDraw, IStaticDrawLine, IStaticDrawPencil } from '../types/tools'
+import Rect from '../tools/Rect'
+import {
+  IStaticDraw,
+  IStaticDrawLine,
+  IStaticDrawPencil,
+  IStaticDrawRect
+} from '../types/tools'
 
 export const messageHandler = (
   obj: {
@@ -35,6 +41,10 @@ export const messageHandler = (
 
       case 'draw-line':
         Line.staticDraw(ctx, params.args as IStaticDrawLine)
+        break
+
+      case 'draw-rect':
+        Rect.staticDraw(ctx, params.args as IStaticDrawRect)
         break
 
       case 'draw-finish':

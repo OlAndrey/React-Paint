@@ -28,8 +28,8 @@ export interface IStaticDrawLine {
 export interface IStaticDrawRect {
     startX: number,
     startY: number,
-    x: number,
-    y: number,
+    width: number,
+    height: number,
     lineWidth: number,
     color: string
 }
@@ -43,4 +43,4 @@ export interface IStaticDrawCircle {
     color: string
 }
 
-export type IStaticDraw = IStaticDrawPencil | IStaticDrawLine
+export type IStaticDraw = IStaticDrawPencil | IStaticDrawLine | IStaticDrawRect | IStaticDrawCircle

@@ -35,8 +35,8 @@ export default class Pencil extends Tools {
         }
       }
       this.socket.send(JSON.stringify(obj))
-
-  }}
+    }
+  }
 
   mouseMove(e: MouseEvent) {
     const target = e.target as HTMLCanvasElement
