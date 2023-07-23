@@ -1,8 +1,12 @@
-import Line from '../tools/Line'
 import Pencil from '../tools/Pencil'
+import Line from '../tools/Line'
 import Rect from '../tools/Rect'
+import Circle from '../tools/Circle'
+import Eraser from '../tools/Eraser'
 import {
   IStaticDraw,
+  IStaticDrawCircle,
+  IStaticDrawEraser,
   IStaticDrawLine,
   IStaticDrawPencil,
   IStaticDrawRect
@@ -47,10 +51,16 @@ export const messageHandler = (
         Rect.staticDraw(ctx, params.args as IStaticDrawRect)
         break
 
+      case 'draw-circle':
+        Circle.staticDraw(ctx, params.args as IStaticDrawCircle)
+        break
+
+      case 'draw-eraser':
+        Eraser.staticDraw(ctx, params.args as IStaticDrawEraser)
+        break
+
       case 'draw-finish':
-        if (ctx) {
-          ctx.beginPath()
-        }
+        if (ctx) ctx.beginPath()
         break
 
       default:

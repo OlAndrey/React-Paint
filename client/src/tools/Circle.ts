@@ -1,3 +1,4 @@
+import { IStaticDrawCircle } from '../types/tools'
 import Tools from './Tool'
 
 export default class Circle extends Tools {
@@ -32,12 +33,35 @@ export default class Circle extends Tools {
     }
   }
 
-  mouseUp() {
+  mouseUp(e: MouseEvent) {
+    const target = e.target as HTMLCanvasElement
+    const x = e.pageX - target.offsetLeft
+    const y = e.pageY - target.offsetTop
+    const radiusX = Math.sqrt((x - this.startX) ** 2)
+    const radiusY = Math.sqrt((y - this.startY) ** 2)
+    this.isMouseDown = false
     if (this.ctx) {
       this.ctx.fillStyle = 'black'
       this.ctx.beginPath()
     }
-    this.isMouseDown = false
+    if (this.socket) {
+      const obj = {
+        type: 'draw',
+        params: {
+          room: this.room,
+          func: 'circle',
+          args: {
+            startX: this.startX,
+            startY: this.startY,
+            radiusX,
+            radiusY,
+            lineWidth: this.lineWidth,
+            color: this.color
+          }
+        }
+      }
+      this.socket.send(JSON.stringify(obj))
+    }
   }
 
   mouseMove(e: MouseEvent) {
@@ -66,6 +90,26 @@ export default class Circle extends Tools {
         this.ctx.stroke()
         this.ctx.fill()
       }
+    }
+  }
+  static staticDraw(ctx: CanvasRenderingContext2D | null, args: IStaticDrawCircle) {
+    const { startX, startY, radiusX, radiusY, lineWidth, color } = args
+    if (ctx) {
+      const thisColor = ctx.strokeStyle
+      const thisLineWidth = ctx.lineWidth
+
+      ctx.lineWidth = lineWidth
+      ctx.fillStyle = 'white'
+      ctx.strokeStyle = color
+
+      ctx.beginPath()
+      ctx.ellipse(startX, startY, radiusX, radiusY, 0, 0, Math.PI * 2)
+      ctx.stroke()
+      ctx.fill()
+      ctx.beginPath()
+
+      ctx.strokeStyle = thisColor
+      ctx.lineWidth = thisLineWidth
     }
   }
 }

@@ -1,3 +1,4 @@
+import { IStaticDrawEraser } from '../types/tools'
 import Tools from './Tool'
 
 export default class Eraser extends Tools {
@@ -40,6 +41,21 @@ export default class Eraser extends Tools {
     const y = e.pageY - target.offsetTop
     if (this.isMouseDown) {
       this.draw(x, y)
+      if (this.socket) {
+        const obj = {
+          type: 'draw',
+          params: {
+            room: this.room,
+            func: 'eraser',
+            args: {
+              x,
+              y,
+              lineWidth: this.lineWidth
+            }
+          }
+        }
+        this.socket.send(JSON.stringify(obj))
+      }
     }
   }
 
@@ -55,6 +71,31 @@ export default class Eraser extends Tools {
 
       this.ctx.beginPath()
       this.ctx.moveTo(x, y)
+    }
+  }
+
+  static staticDraw(ctx: CanvasRenderingContext2D | null, args: IStaticDrawEraser) {
+    const { x, y, lineWidth } = args
+    if (ctx) {
+      const thisLineWidth = ctx.lineWidth
+      const thisColor = ctx.strokeStyle
+
+      ctx.fillStyle = 'white'
+      ctx.strokeStyle = 'white'
+      ctx.lineWidth = lineWidth
+      ctx.lineTo(x, y)
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.arc(x, y, lineWidth / 2, 0, Math.PI * 2)
+      ctx.fill()
+
+      ctx.beginPath()
+      ctx.moveTo(x, y)
+
+      ctx.strokeStyle = thisColor
+      ctx.fillStyle = thisColor
+      ctx.lineWidth = thisLineWidth
     }
   }
 }

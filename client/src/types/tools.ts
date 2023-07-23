@@ -37,10 +37,16 @@ export interface IStaticDrawRect {
 export interface IStaticDrawCircle {
     startX: number,
     startY: number,
-    x: number,
-    y: number,
+    radiusX: number,
+    radiusY: number,
     lineWidth: number,
     color: string
 }
 
-export type IStaticDraw = IStaticDrawPencil | IStaticDrawLine | IStaticDrawRect | IStaticDrawCircle
+export interface IStaticDrawEraser {
+    x: number,
+    y: number,
+    lineWidth: number,
+}
+
+export type IStaticDraw = IStaticDrawPencil | IStaticDrawLine | IStaticDrawRect | IStaticDrawCircle | IStaticDrawEraser
