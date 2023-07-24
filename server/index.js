@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+const fs = require('fs')
+const path = require('path')
 const WSServer = require('express-ws')(app)
 const aWss = WSServer.getWss()
 const broadcastConnection = require('./src/utils/broadcastConnection')
@@ -8,6 +11,38 @@ const notifyLeav = require('./src/utils/notifyLeav')
 
 const maxClients = 5
 let rooms = {}
+let imgFromRooms = {}
+
+app.use(cors())
+app.use(express.json())
+
+app.post('/image', (req, res) => {
+  try {
+    const roomName = req.query.id
+    imgFromRooms[roomName] = req.body.img
+    // console.log(req.body)
+    // const data = req.body.img.replace(`data:image/png;base64,`, '')
+    // fs.writeFileSync(path.resolve(__dirname, 'files', `${req.query.id}.jpg`), data, 'base64')
+    return res.status(200).json({ message: 'Загружено' })
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json('error')
+  }
+})
+
+app.get('/image', (req, res) => {
+  try {
+    const roomName = req.query.id
+    const data = imgFromRooms[roomName]
+
+    // const file = fs.readFileSync(path.resolve(__dirname, 'files', `${req.query.id}.jpg`))
+    // const data = `data:image/png;base64,` + file.toString('base64')
+    res.status(200).json({ data })
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json('error')
+  }
+})
 
 app.ws('/', (ws, res) => {
   ws.on('message', function message(data) {
@@ -67,6 +102,7 @@ function leave(ws, params) {
 
 function close(room) {
   const newRooms = {}
+  if (imgFromRooms[room]) delete imgFromRooms[room]
   for (const roomName in rooms) {
     if (roomName !== room) {
       newRooms[roomName] = rooms[roomName]
@@ -77,7 +113,7 @@ function close(room) {
 }
 
 function drawHandler(ws, params) {
-  console.log( 'draw-' + params.func)
+  console.log('draw-' + params.func)
   aWss.clients.forEach((client) => {
     if (client.room === ws.room && client.id !== ws.id) {
       const obj = {
