@@ -23,7 +23,14 @@ const ToolBar: React.FC<ToolBarPropsType> = ({ canvas, socket }) => {
       if (tool) tool.destroyEvent()
     } else dispatch(setToolName(selectedTool))
   }
-
+  const save = () => {
+    if (canvas) {
+      const link = document.createElement('a')
+      link.setAttribute('href', canvas.toDataURL('image/png'))
+      link.setAttribute('download', `${room}.png`)
+      link.click()
+    }
+  }
   return (
     <div className="toolbar">
       {toolbarData.map((item, index) => (
@@ -83,7 +90,7 @@ const ToolBar: React.FC<ToolBarPropsType> = ({ canvas, socket }) => {
       >
         <Icon name="RedoIcon" fill="none" />
       </button>
-      <button className="toolbar__btn">
+      <button className="toolbar__btn" onClick={save}>
         <Icon name="SaveIcon" />
       </button>
     </div>
