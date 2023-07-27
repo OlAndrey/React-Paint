@@ -20,7 +20,7 @@ app.post('/image', (req, res) => {
   try {
     const roomName = req.query.id
     imgFromRooms[roomName] = req.body.img
-    // console.log(req.body)
+
     // const data = req.body.img.replace(`data:image/png;base64,`, '')
     // fs.writeFileSync(path.resolve(__dirname, 'files', `${req.query.id}.jpg`), data, 'base64')
     return res.status(200).json({ message: 'Загружено' })
@@ -113,7 +113,6 @@ function close(room) {
 }
 
 function drawHandler(ws, params) {
-  console.log('draw-' + params.func)
   aWss.clients.forEach((client) => {
     if (client.room === ws.room && client.id !== ws.id) {
       const obj = {

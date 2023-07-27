@@ -7,10 +7,12 @@ import {
   IStaticDraw,
   IStaticDrawCircle,
   IStaticDrawEraser,
+  IStaticDrawFill,
   IStaticDrawLine,
   IStaticDrawPencil,
   IStaticDrawRect
 } from '../types/tools'
+import Fill from '../tools/Fill'
 
 export const messageHandler = (
   obj: {
@@ -57,6 +59,10 @@ export const messageHandler = (
 
       case 'draw-eraser':
         Eraser.staticDraw(ctx, params.args as IStaticDrawEraser)
+        break
+
+      case 'draw-fill':
+        Fill.staticFill(ctx, params.args as IStaticDrawFill)
         break
 
       case 'draw-finish':

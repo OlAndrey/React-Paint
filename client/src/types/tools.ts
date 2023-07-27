@@ -49,4 +49,10 @@ export interface IStaticDrawEraser {
     lineWidth: number,
 }
 
-export type IStaticDraw = IStaticDrawPencil | IStaticDrawLine | IStaticDrawRect | IStaticDrawCircle | IStaticDrawEraser
+export interface IStaticDrawFill {
+    x: number
+    y: number
+    color: number[]
+}
+
+export type IStaticDraw = IStaticDrawPencil | IStaticDrawLine | IStaticDrawRect | IStaticDrawCircle | IStaticDrawEraser | IStaticDrawFill

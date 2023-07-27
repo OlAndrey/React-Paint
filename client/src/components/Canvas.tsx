@@ -12,6 +12,7 @@ const Canvas: FC<CanvasPropsType> = ({ setCanvas }) => {
   const canvRef = useRef() as MutableRefObject<HTMLCanvasElement>
   const dispatch = useAppDispatch()
   const { room } = useAppSelector((state) => state.canvasState)
+  const { toolName } = useAppSelector((state) => state.toolState)
 
   useEffect(() => {
     if (canvRef.current) setCanvas(canvRef.current)
@@ -25,8 +26,10 @@ const Canvas: FC<CanvasPropsType> = ({ setCanvas }) => {
   }, [room])
 
   const mouseDownHandler = (e: MouseEvent) => {
-    const target = e.target as HTMLCanvasElement
-    dispatch(pushToUndo(target.toDataURL()))
+    if (toolName) {
+      const target = e.target as HTMLCanvasElement
+      dispatch(pushToUndo(target.toDataURL()))
+    }
   }
 
   return (
