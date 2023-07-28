@@ -17,6 +17,12 @@ const Auth: FC<AuthPropsType> = ({ canvas, setSocket }) => {
   const [showModal, setShowModal] = useState(true)
   const dispatch = useAppDispatch()
   let { id } = useParams()
+  const toastOpnions = {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 3000,
+    hideProgressBar: false,
+    transition: Slide
+  }
 
   const infoConnect = (clients: number) => {
     dispatch(setCanvasUsers(clients))
@@ -26,12 +32,6 @@ const Auth: FC<AuthPropsType> = ({ canvas, setSocket }) => {
   }
 
   const infoRoom = (params: any, isNewUser: boolean) => {
-    const toastOpnions = {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 3000,
-      hideProgressBar: false,
-      transition: Slide
-    }
     dispatch(setCanvasUsers(params.clients))
 
     if (isNewUser) {
@@ -46,6 +46,11 @@ const Auth: FC<AuthPropsType> = ({ canvas, setSocket }) => {
   const connect = () => {
     if (inputRef.current.value.trim()) {
       const ws = new WebSocket('ws://localhost:5000')
+
+      ws.onerror = function () {
+        toast.error('Failed to connect!!!', toastOpnions)
+      }
+
       ws.onopen = function () {
         const obj = {
           type: 'connect',
