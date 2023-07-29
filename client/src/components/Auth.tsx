@@ -45,7 +45,7 @@ const Auth: FC<AuthPropsType> = ({ canvas, setSocket }) => {
 
   const connect = () => {
     if (inputRef.current.value.trim()) {
-      const ws = new WebSocket('ws://localhost:5000')
+      const ws = new WebSocket(process.env.REACT_APP_WS_URL)
 
       ws.onerror = function () {
         toast.error('Failed to connect!!!', toastOpnions)

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const getImage = async (canv: HTMLCanvasElement, id: string) => {
-  axios.get(`http://localhost:5000/image?id=${id}`).then((response) => {
+  axios.get(`https://${process.env.REACT_APP_API_URL}/image?id=${id}`).then((response) => {
     const ctx = canv.getContext('2d')
     const img = new Image()
     img.onload = async () => {
@@ -16,6 +16,6 @@ export const getImage = async (canv: HTMLCanvasElement, id: string) => {
 
 export const postImage = async (canv: HTMLCanvasElement, id: string) => {
   axios
-    .post(`http://localhost:5000/image?id=${id}`, { img: canv.toDataURL() })
+    .post(`https://${process.env.REACT_APP_API_URL}/image?id=${id}`, { img: canv.toDataURL() })
     .catch((err) => console.error(err))
 }
