@@ -1,46 +1,80 @@
-# Getting Started with Create React App
+# React Paint
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A drawing app for several participants. Developed in react with canvas and websocket. Program with the ability to simultaneously connect up to 5 participants on 1 canvas.
 
-## Available Scripts
+## Main features of this App
 
-In the project directory, you can run:
+> Drawing simple shapes like line, rectangle and circle
 
-### `npm start`
+> Erasing the superfluous and unnecessary
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> Choose the color and size of shape lines
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> Filling shapes of any shapes with the selected color
 
-### `npm test`
+> Draw up to 5 participants on 1 canvas
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> Notify the canvas user when members join and leave
 
-### `npm run build`
+## [Project Live Link](https://react-paint.onrender.com/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [ReactJS](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [Node](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [Express-WS](https://github.com/HenningM/express-ws)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+To get a local copy up and running follow these simple example steps.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ```
+  $ git clone git@github.com:OlAndrey/React-Paint.git
+  $ cd React-Paint
+  ```
+  
+#### Server
+- cd into backend and write npm install or npm i in command terminal
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  ```
+  $ cd server
+  $/server npm install
+  ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Write npm run dev to start the backend server
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  ```
+  $/server npm run dev
+  ```
 
-## Learn More
+#### Client
+- cd into my-project and write npm install or npm i in command terminal
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  ```
+  $ cd client
+  $/client npm install
+  ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Write npm start to start the react server
+
+  ```
+  $/client npm start
+  ```
+
+Create a `.env` file in the client directory and add the next contents to it:
+   
+  ```
+    REACT_APP_API_URL : localhost:5000 or any other url to connect rest api
+    REACT_APP_WS_URL : ws://localhost:5000 or any other url to connect web socket`
+  ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Support
+
+Reach out to me at one of the following places!
+
+- Email at <a href="mailto:oleynik.andrey01@gmail.com">`oleynik.andrey01@gmail.com`</a>
